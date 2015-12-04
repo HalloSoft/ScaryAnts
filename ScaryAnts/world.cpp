@@ -4,12 +4,15 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QTime>
 
 World::World(QWidget *parent) :
     QWidget(parent),
     _gameStarted(false)
 {
-    startTimer(2000);
+    QTime time = QTime::currentTime();
+    qsrand((uint)time.msec() * 1000);
+    startTimer(500);
 
 }
 
@@ -82,6 +85,7 @@ void World::drawAnt(QPainter *painter, Ant *ant)
     QPointF position = ant->position() + QPointF(50, 50);
     painter->drawEllipse(position, 5, 5);
 
-    qDebug() << "Draw ant at" << position;
+    //qDebug() << "Draw ant at" << position;
+    qDebug() << "Rand:" << qrand();
 }
 
