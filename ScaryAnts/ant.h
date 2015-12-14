@@ -3,22 +3,30 @@
 
 #include <QPointF>
 
+class World;
+
 
 class Ant
 {
 public:
-    Ant();
+    Ant(World *world);
 
-    void setPosition(const QPointF& position) { _position = position;}
+    void    setPosition(const QPointF& position) { _position = position;}
     QPointF position() const {return _position;}
 
-    void setSpeed(const QPointF& speed) { _speed = speed;}
+    void    setSpeed(float speed) { _speed = speed;}
+    float   speed() const { return _speed;}
 
-    void processNewPosition();
+    void    setDirection(const QPointF& dircetion) {_direction = dircetion;}
+    QPointF direction() const {return _direction;}
 
-private:
+    virtual void processNewPosition() = 0;
+
+protected:
+    World   *_world;
     QPointF _position;
-    QPointF _speed;
+    QPointF _direction;
+    float   _speed;
 
 };
 

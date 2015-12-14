@@ -1,12 +1,11 @@
 #include "ant.h"
 
-Ant::Ant()
+//#include "world.h"
+
+Ant::Ant(World *world) :
+    _world(world),
+    _speed(1)
 {
 
-}
-
-void Ant::processNewPosition()
-{
-    _position += _speed;
 }
 

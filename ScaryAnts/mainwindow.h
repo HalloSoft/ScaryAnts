@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class Game;
+
 namespace Ui {
 class MainWindow;
 }
@@ -20,7 +22,10 @@ private slots:
     void startGame();
 
 private:
+    static const quint32 antcount;
+
     Ui::MainWindow *ui;
+    Game           *_game;
 };
 
 #endif // MAINWINDOW_H

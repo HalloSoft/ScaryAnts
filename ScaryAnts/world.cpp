@@ -1,10 +1,13 @@
 #include "world.h"
 
-#include "ant.h"
+#include "commonant.h"
 
+#include <cstdlib>
 #include <QDebug>
 #include <QPainter>
 #include <QTime>
+
+const int World::interval = 50;  // milliseconds
 
 World::World(QWidget *parent) :
     QWidget(parent),
@@ -12,7 +15,7 @@ World::World(QWidget *parent) :
 {
     QTime time = QTime::currentTime();
     qsrand((uint)time.msec() * 1000);
-    startTimer(500);
+    startTimer(interval);
 
 }
 
@@ -26,7 +29,7 @@ void World::stopGame()
    _gameStarted = false;
 }
 
-quint64 World::createAnt()
+quint64 World::createAnt(const QPointF startPoint )
 {
     QList<quint64> idList =_antHash.keys();
     quint64 newId = 0;
@@ -39,8 +42,8 @@ quint64 World::createAnt()
         newId = maxId + 1;
     }
 
-    Ant *newAnt = new Ant;
-    newAnt->setSpeed(QPointF(1, -1));
+    Ant *newAnt = new CommonAnt(this);
+    newAnt->setPosition(startPoint);
 
     _antHash.insert(newId, newAnt);
 
@@ -55,7 +58,7 @@ void World::paintEvent(QPaintEvent *event)
 
     painter.eraseRect(rect());
 
-    painter.fillRect(rect(), Qt::white);
+    painter.fillRect(rect(), Qt::darkGreen);
 
     drawAnts(&painter);
 }
@@ -73,19 +76,24 @@ void World::drawAnts(QPainter *painter)
     foreach(quint64 id, _antHash.keys())
     {
         Ant *ant = _antHash.value(id);
-        ant->processNewPosition();
         drawAnt(painter, ant);
+        ant->processNewPosition();
+
     }
 }
 
 void World::drawAnt(QPainter *painter, Ant *ant)
 {
-    painter->setBrush(Qt::cyan);
+    painter->setBrush(Qt::black);
     painter->setPen(Qt::darkCyan);
-    QPointF position = ant->position() + QPointF(50, 50);
+
+    QPointF position = ant->position();
     painter->drawEllipse(position, 5, 5);
 
-    //qDebug() << "Draw ant at" << position;
-    qDebug() << "Rand:" << qrand();
+
+    //qDebug() << "Draw ant at:" << position << "with speed" << ant->speed();
+    //qDebug() << "Rand:" << qrand();
 }
+
+
 

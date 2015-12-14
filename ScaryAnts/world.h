@@ -13,8 +13,10 @@ public:
 
     void startGame();
     void stopGame();
+    bool isGameRunning() const { return _gameStarted;}
 
-    quint64 createAnt();
+    quint64 createAnt(const QPointF startPoint = QPointF());
+    QHash<quint64,Ant*> antHash() const { return _antHash;}
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -24,8 +26,11 @@ signals:
 
 public slots:
 private:
+    static const int interval;
     void drawAnts(QPainter *painter);
     void drawAnt(QPainter *painter, Ant *ant);
+
+    float randomFactor() const;
 
     bool _gameStarted;
     QHash<quint64,Ant*> _antHash;
