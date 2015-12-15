@@ -14,9 +14,6 @@ public:
 private:
 
     void  calculateDirectionAndSpeed();
-    float randomFactor() const;
-
-    QPointF newAbsolute(float speed, const QPointF& direction);
 
     void changeDirection(const QPointF &nextPoint);
 

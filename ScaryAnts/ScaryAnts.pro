@@ -17,12 +17,14 @@ SOURCES += main.cpp\
     world.cpp \
     ant.cpp \
     commonant.cpp \
-    game.cpp
+    game.cpp \
+    socialant.cpp
 
 HEADERS  += mainwindow.h \
     world.h \
     ant.h \
     commonant.h \
-    game.h
+    game.h \
+    socialant.h
 
 FORMS    += mainwindow.ui

@@ -1,6 +1,7 @@
 #include "world.h"
 
 #include "commonant.h"
+#include "socialant.h"
 
 #include <cstdlib>
 #include <QDebug>
@@ -42,7 +43,8 @@ quint64 World::createAnt(const QPointF startPoint )
         newId = maxId + 1;
     }
 
-    Ant *newAnt = new CommonAnt(this);
+    //Ant *newAnt = new CommonAnt(this);
+    Ant *newAnt = new SocialAnt(this);
     newAnt->setPosition(startPoint);
 
     _antHash.insert(newId, newAnt);

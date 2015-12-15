@@ -3,7 +3,7 @@
 
 #include <QPointF>
 
-class World;
+#include "world.h"
 
 
 class Ant
@@ -22,11 +22,20 @@ public:
 
     virtual void processNewPosition() = 0;
 
+    double distance(Ant* other, bool exactCalculation = false) const;
+
 protected:
+
+    QPointF makeVelocityVector(float speed, const QPointF& direction);
+    float randomFactor() const;
+
     World   *_world;
     QPointF _position;
     QPointF _direction;
     float   _speed;
+
+private:
+    quint64 _id; //TODO: is it neccessary
 
 };
 
