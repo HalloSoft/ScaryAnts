@@ -13,12 +13,12 @@ void SocialAnt::processNewPosition()
 {
     calculateDirectionAndSpeed();
 
-    QPointF tryPoint = _position + makeVelocityVector(speed(),  _direction);
+    QPointF tryPoint = position() + makeVelocityVector(speed(),  direction());
 
-    QRectF worldArea = _world->rect();
+    QRectF worldArea = world()->rect();
 
     if(worldArea.contains(tryPoint.toPoint()))
-        _position = tryPoint;
+        setPosition(tryPoint);
     else
        changeDirectionOnBarrier(tryPoint);
 }
@@ -37,39 +37,63 @@ void SocialAnt::calculateDirectionAndSpeed()
 
     const QPointF directionVector = QPointF(dx, dy);
 
-    isSiblingNear(10);
+    Ant *nearestAnt = isSiblingNear(interactionRadius());
+    QPointF newDirection;
+    if(nearestAnt)
+    {
+        QPointF socialDirection = interationDirection(nearestAnt);
+        newDirection = makeVelocityVector(speed(), socialDirection);
+    }
+    else
+        newDirection = makeVelocityVector(speed(), directionVector);
 
-    _direction = makeVelocityVector(speed(), directionVector);
+    setDirection(newDirection);
 }
 
 void SocialAnt::changeDirectionOnBarrier(const QPointF& nextPoint)
 {
-    QRectF boundingRect = _world->rect();
+    QRectF boundingRect = world()->rect();
+    QPointF newDirection;
 
     if((nextPoint.x() < 1) ||(nextPoint.x() > boundingRect.width() - 2))
-        _direction.setX(-_direction.x());
+        newDirection.setX( - direction().x());
 
     if((nextPoint.y() < 1) ||(nextPoint.y() > boundingRect.height() - 2))
-        _direction.setY( -_direction.y());
+        newDirection.setY( - direction().y());
+
+    setDirection(newDirection);
 }
 
-bool SocialAnt::isSiblingNear(double maxDistance) const
+Ant* SocialAnt::isSiblingNear(double maxDistance) const
 {
-    bool result = false;
+    Ant *sibling = nullptr;
+
 
     QHash<quint64, Ant*>::const_iterator i;
-    for (i = _world->antHash().constBegin(); i != _world->antHash().constEnd(); ++i)
+    for (i = world()->antHash().constBegin(); i != world()->antHash().constEnd(); ++i)
     {
         Ant *ant = i.value();
 
         if(this != ant)
         {
-            if(distance(ant) < maxDistance)
+            float antDistance = distance(ant, true);
+            if(antDistance < maxDistance)
             {
-                qDebug() << "Alert!!!";
+                sibling = ant;
+                qDebug() << "Meet - this and" << i.key();
             }
         }
     }
 
-    return result;
+    return sibling;
+}
+
+QPointF SocialAnt::directionToFirend(Ant *other) const
+{
+    return other->position() - position();
+}
+
+QPointF SocialAnt::interationDirection(Ant *other) const
+{
+    return directionToFirend(other);
 }

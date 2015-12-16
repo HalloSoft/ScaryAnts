@@ -1,0 +1,11 @@
+# Build files
+#####################
+build*
+
+# OS created files
+#####################
+.directory
+
+# user files
+#####################
+ScaryAnts/ScaryAnts.pro.user

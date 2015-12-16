@@ -8,7 +8,8 @@ using namespace std;
 
 Ant::Ant(World *world) :
     _world(world),
-    _speed(1)
+    _speed(1),
+    _interactionRadius(50)
 {
 
 }
@@ -26,20 +27,22 @@ QPointF Ant::makeVelocityVector(float speed, const QPointF &direction)
 
 float Ant::randomFactor() const
 {
-    const float random = ((float)qrand() - RAND_MAX /2) / (RAND_MAX / 2);
+    const float random = ((float)qrand() - RAND_MAX / 2) / (RAND_MAX / 2);
     return random;
 }
 
 double Ant::distance(Ant *other, bool exactCalculation) const
 {
-    QPointF difference = this->position() - other->position();
-
     double result = 0;
+    if(this != other)
+    {
+        QPointF difference = this->position() - other->position();
 
-    if(exactCalculation)
-        result = sqrt(pow(difference.x(), 2) + pow(difference.y(), 2));
-    else
-        result = difference.manhattanLength();
+        if(exactCalculation)
+            result = sqrt(pow(difference.x(), 2) + pow(difference.y(), 2));
+        else
+            result = difference.manhattanLength();
+    }
 
     return result;
 }

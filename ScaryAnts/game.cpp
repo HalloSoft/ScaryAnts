@@ -12,13 +12,13 @@ Game::Game(World *world, QObject *parent) :
 }
 void Game::initialize()
 {
-    int id1 =_world->createAnt(QPoint(100, 2));
+    int id1 =_world->createAnt(QPoint(0, 0));
     _world->antHash().value(id1)->setSpeed(3);
     int id2 =_world->createAnt(QPoint(100, 200));
     _world->antHash().value(id2)->setSpeed(1.5);
     int id3 =_world->createAnt(QPoint(400, 2));
     _world->antHash().value(id3)->setSpeed(1.5);
-    int id4 =_world->createAnt(QPoint(400, 200));
+    int id4 =_world->createAnt(QPoint(500, 300));
     _world->antHash().value(id4)->setSpeed(3);
 //    int id5 =_world->createAnt(QPoint(280, 2));
 //    _world->antHash().value(id5)->setSpeed(1.5);

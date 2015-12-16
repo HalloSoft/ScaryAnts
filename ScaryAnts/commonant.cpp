@@ -14,12 +14,12 @@ void CommonAnt::processNewPosition()
 {
     calculateDirectionAndSpeed();
 
-    QPointF tryPoint = _position + makeVelocityVector(speed(),  _direction);
+    QPointF tryPoint = position() + makeVelocityVector(speed(),  direction());
 
-    QRect worldArea = _world->rect();
+    QRect worldArea = world()->rect();
 
     if(worldArea.contains(tryPoint.toPoint()))
-        _position = tryPoint;
+        setPosition(tryPoint);
     else
        changeDirection(tryPoint);
 }
@@ -37,18 +37,21 @@ void CommonAnt::calculateDirectionAndSpeed()
     float dx = dxStaticPart + dxRandomPart;
     float dy = dyStaticPart + dyRandomPart;
 
-    _direction = makeVelocityVector(speed(), QPointF(dx, dy));
+    setDirection(makeVelocityVector(speed(), QPointF(dx, dy)));
 }
 
 
 
 void CommonAnt::changeDirection(const QPointF& nextPoint)
 {
-    QRectF boundingRect = _world->rect();
+    QRectF boundingRect = world()->rect();
+    QPointF newDirection;
 
     if((nextPoint.x() < 1) ||(nextPoint.x() > boundingRect.width() - 2))
-        _direction.setX(-_direction.x());
+        newDirection.setX(- direction().x());
 
     if((nextPoint.y() < 1) ||(nextPoint.y() > boundingRect.height() - 2))
-        _direction.setY( -_direction.y());
+        newDirection.setY( - direction().y());
+
+    setDirection(newDirection);
 }
