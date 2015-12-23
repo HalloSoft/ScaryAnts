@@ -29,11 +29,13 @@ private:
     static const int interval;
     void drawAnts(QPainter *painter);
     void drawAnt(QPainter *painter, Ant *ant);
+    void drawInfo(QPainter *painter);
 
     float randomFactor() const;
 
     bool _gameStarted;
     AntHash _antHash;
+    quint64 _livecycleCounter {0};
 };
 
 #endif // WORLD_H
