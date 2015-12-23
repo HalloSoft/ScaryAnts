@@ -1,5 +1,8 @@
 #include "socialant.h"
 
+#include "world.h"
+
+#include <limits>
 #include <QRectF>
 #include <QtDebug>
 
@@ -37,7 +40,7 @@ void SocialAnt::calculateDirectionAndSpeed()
 
     const QPointF directionVector = QPointF(dx, dy);
 
-    Ant *nearestAnt = isSiblingNear(interactionRadius());
+    Ant *nearestAnt = nearestSiblingNear(interactionRadius());
     QPointF newDirection;
     if(nearestAnt)
     {
@@ -64,28 +67,33 @@ void SocialAnt::changeDirectionOnBarrier(const QPointF& nextPoint)
     setDirection(newDirection);
 }
 
-Ant* SocialAnt::isSiblingNear(double maxDistance) const
+Ant* SocialAnt::nearestSiblingNear(double maxDistance) const
 {
-    Ant *sibling = nullptr;
+    Ant *nearestSibling = nullptr;
 
+    int minDistance = std::numeric_limits<int>::max();
 
-    QHash<quint64, Ant*>::const_iterator i;
-    for (i = world()->antHash().constBegin(); i != world()->antHash().constEnd(); ++i)
+    AntHash antHash = world()->antHash();
+
+    foreach(quint64 antId, antHash.keys())
     {
-        Ant *ant = i.value();
+        Ant *ant = antHash.value(antId);
 
         if(this != ant)
         {
             float antDistance = distance(ant, true);
-            if(antDistance < maxDistance)
+
+            if(antDistance < minDistance)
             {
-                sibling = ant;
-                qDebug() << "Meet - this and" << i.key();
+                minDistance = antDistance;
+
+                if(antDistance < maxDistance)
+                    nearestSibling = ant;
             }
         }
     }
 
-    return sibling;
+    return nearestSibling;
 }
 
 QPointF SocialAnt::directionToFirend(Ant *other) const

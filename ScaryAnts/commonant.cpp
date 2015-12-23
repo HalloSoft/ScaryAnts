@@ -1,5 +1,7 @@
 #include "commonant.h"
 
+#include "world.h"
+
 
 #include <QDebug>
 #include <QRect>

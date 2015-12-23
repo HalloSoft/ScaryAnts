@@ -1,14 +1,17 @@
 #ifndef ANT_H
 #define ANT_H
 
+#include <QHash>
 #include <QPointF>
 
-#include "world.h"
-
+//#include "world.h"
+class World;
 
 class Ant
 {
 public:
+    enum AntType{ common, social};
+
     Ant(World *world);
 
     World* world() const {return _world;}
@@ -31,6 +34,7 @@ public:
 
 protected:
 
+
     QPointF makeVelocityVector(float speed, const QPointF& direction);
     float randomFactor() const;
 
@@ -41,7 +45,8 @@ private:
     float   _speed;
     float   _interactionRadius;
 
-    quint64 _id; //TODO: is it neccessary
+    quint64 _id; //TODO: is it neccessary?
 };
 
+typedef QHash<quint64,Ant*> AntHash;
 #endif // ANT_H

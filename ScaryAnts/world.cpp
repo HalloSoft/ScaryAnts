@@ -30,7 +30,7 @@ void World::stopGame()
    _gameStarted = false;
 }
 
-quint64 World::createAnt(const QPointF startPoint )
+quint64 World::createAnt(const QPointF startPoint, Ant::AntType type )
 {
     QList<quint64> idList =_antHash.keys();
     quint64 newId = 0;
@@ -43,8 +43,14 @@ quint64 World::createAnt(const QPointF startPoint )
         newId = maxId + 1;
     }
 
-    //Ant *newAnt = new CommonAnt(this);
-    Ant *newAnt = new SocialAnt(this);
+    Ant *newAnt = nullptr;
+    if(type == Ant::common)
+        newAnt = new CommonAnt(this);
+    else
+        newAnt = new SocialAnt(this);
+
+    Q_CHECK_PTR(newAnt);
+
     newAnt->setPosition(startPoint);
 
     _antHash.insert(newId, newAnt);

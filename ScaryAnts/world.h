@@ -1,9 +1,9 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include "ant.h"
 #include <QWidget>
 
-class Ant;
 
 class World : public QWidget
 {
@@ -15,8 +15,8 @@ public:
     void stopGame();
     bool isGameRunning() const { return _gameStarted;}
 
-    quint64 createAnt(const QPointF startPoint = QPointF());
-    QHash<quint64,Ant*> antHash() const { return _antHash;}
+    quint64 createAnt(const QPointF startPoint = QPointF(), Ant::AntType type = Ant::common);
+    AntHash antHash() const { return _antHash;}
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -33,7 +33,7 @@ private:
     float randomFactor() const;
 
     bool _gameStarted;
-    QHash<quint64,Ant*> _antHash;
+    AntHash _antHash;
 };
 
 #endif // WORLD_H
