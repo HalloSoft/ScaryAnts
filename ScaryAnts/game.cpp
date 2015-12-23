@@ -12,13 +12,13 @@ Game::Game(World *world, QObject *parent) :
 }
 void Game::initialize()
 {
-    for(int row = 10; row < _world->height(); row += 50)
+    for(int row = 100; row < _world->height(); row += 100)
     {
-        for(int column = 10; column < _world->width(); column += 50)
+        for(int column = 100; column < _world->width(); column += 100)
         {
             int id1 =_world->createAnt(QPoint(column, row), Ant::social);
             _world->antHash().value(id1)->setSpeed(3);
-            _world->antHash().value(id1)->setInteractionRadius(30);
+            _world->antHash().value(id1)->setInteractionRadius(50);
         }
     }
 
@@ -59,5 +59,10 @@ void Game::initialize(QList<QPointF> startPoints)
 void Game::start()
 {
     _world->startGame();
+}
+
+void Game::stop()
+{
+    _world->stopGame();
 }
 

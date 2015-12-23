@@ -21,6 +21,7 @@ signals:
 
 public slots:
     void start();
+    void stop();
 
 private:
     World *_world;

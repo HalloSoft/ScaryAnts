@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     bool isConnected = false;
     Q_UNUSED(isConnected);
     isConnected = connect(ui->buttonInit, SIGNAL(clicked()), this, SLOT(initGame()));   Q_ASSERT(isConnected);
-    isConnected = connect(ui->buttonStart, SIGNAL(clicked()), _game, SLOT(start()));    Q_ASSERT(isConnected);
+    isConnected = connect(ui->buttonStart, SIGNAL(clicked()), this, SLOT(startGame()));    Q_ASSERT(isConnected);
 }
 
 MainWindow::~MainWindow()
@@ -33,12 +33,12 @@ void MainWindow::startGame()
 {
     if(ui->world->isGameRunning())
     {
-        ui->world->stopGame();
+        _game->stop();
         ui->buttonStart->setText("Start");
     }
     else
     {
-        ui->world->startGame();
+        _game->start();
         ui->buttonStart->setText("Stop");
     }
 }

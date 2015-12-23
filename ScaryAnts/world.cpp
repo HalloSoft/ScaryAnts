@@ -103,14 +103,10 @@ void World::drawAnt(QPainter *painter, Ant *ant)
     painter->setBrush(oldBrush);
     painter->setPen(Qt::red);
 
-    const float radius = ant->interactionRadius();
-    QPointF startPointView = ant->position(); // - QPointF(radius, radius);
+    //const float radius = ant->interactionRadius();
+    //QPointF startPointView = ant->position(); // - QPointF(radius, radius);
 
-    painter->drawEllipse(startPointView, radius, radius);
-
-
-    //qDebug() << "Draw ant at:" << position << "with speed" << ant->speed();
-    //qDebug() << "Rand:" << qrand();
+    //painter->drawEllipse(startPointView, radius, radius);
 }
 
 

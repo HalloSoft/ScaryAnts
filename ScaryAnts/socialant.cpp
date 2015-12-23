@@ -69,7 +69,7 @@ void SocialAnt::changeDirectionOnBarrier(const QPointF& nextPoint)
 
 Ant* SocialAnt::nearestSiblingNear(double maxDistance) const
 {
-    Ant *nearestSibling = nullptr;
+    Ant *nearestSibling {nullptr};
 
     int minDistance = std::numeric_limits<int>::max();
 
@@ -83,7 +83,7 @@ Ant* SocialAnt::nearestSiblingNear(double maxDistance) const
         {
             float antDistance = distance(ant, true);
 
-            if(antDistance < minDistance)
+            if((antDistance < minDistance) && (antDistance > 30))
             {
                 minDistance = antDistance;
 
