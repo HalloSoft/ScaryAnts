@@ -116,6 +116,5 @@ void World::drawAnt(QPainter *painter, Ant *ant)
 void World::drawInfo(QPainter *painter)
 {
     painter->drawText(10,15, QString::number(_livecycleCounter++));
-
 }
 
