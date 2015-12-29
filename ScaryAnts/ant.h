@@ -28,6 +28,9 @@ public:
     void    setInteractionRadius(float interactionRadius) {_interactionRadius = interactionRadius;}
     float   interactionRadius() const { return _interactionRadius;}
 
+    void    setPrivacyRadius(float privacyRadius) {_privacyRadius = privacyRadius;}
+    float   privacyRadius() const {return _privacyRadius;}
+
     virtual void processNewPosition() = 0;
 
     double distance(Ant* other, bool exactCalculation = false) const;
@@ -44,6 +47,7 @@ private:
     QPointF _direction;
     float   _speed;
     float   _interactionRadius;
+    float   _privacyRadius;
 
     quint64 _id; //TODO: is it neccessary?
 };
