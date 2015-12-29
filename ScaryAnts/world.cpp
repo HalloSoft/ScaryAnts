@@ -69,6 +69,8 @@ void World::paintEvent(QPaintEvent *event)
     painter.fillRect(rect(), Qt::darkGreen);
 
     drawAnts(&painter);
+
+    drawInfo(&painter);
 }
 
 void World::timerEvent(QTimerEvent *event)
@@ -107,7 +109,13 @@ void World::drawAnt(QPainter *painter, Ant *ant)
     //QPointF startPointView = ant->position(); // - QPointF(radius, radius);
 
     //painter->drawEllipse(startPointView, radius, radius);
+
+    painter->setBrush(oldBrush);
 }
 
+void World::drawInfo(QPainter *painter)
+{
+    painter->drawText(10,15, QString::number(_livecycleCounter++));
 
+}
 
