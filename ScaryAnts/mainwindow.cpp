@@ -11,12 +11,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->world->setPrivacyRadiusVisible(true);
+    ui->world->setInteractionRadiusVisible(true);
+
     _game = new Game(ui->world, this);
 
     bool isConnected = false;
     Q_UNUSED(isConnected);
     isConnected = connect(ui->buttonInit, SIGNAL(clicked()), this, SLOT(initGame()));   Q_ASSERT(isConnected);
-    isConnected = connect(ui->buttonStart, SIGNAL(clicked()), this, SLOT(startGame()));    Q_ASSERT(isConnected);
+    isConnected = connect(ui->buttonStart, SIGNAL(clicked()), this, SLOT(startGame())); Q_ASSERT(isConnected);
 }
 
 MainWindow::~MainWindow()
