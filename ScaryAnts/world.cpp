@@ -12,6 +12,8 @@ const int World::interval = 50;  // milliseconds
 
 World::World(QWidget *parent) :
     QWidget(parent),
+    _interactionRadiusVisible(false),
+    _privacyRadiusVisible(false),
     _gameStarted(false)
 {
     QTime time = QTime::currentTime();
@@ -103,12 +105,23 @@ void World::drawAnt(QPainter *painter, Ant *ant)
     painter->drawEllipse(startPointAnt, 6, 6);
 
     painter->setBrush(oldBrush);
-    painter->setPen(Qt::red);
 
-    //const float radius = ant->interactionRadius();
-    //QPointF startPointView = ant->position(); // - QPointF(radius, radius);
 
-    //painter->drawEllipse(startPointView, radius, radius);
+    // draw interaction radius
+    if(_interactionRadiusVisible)
+    {
+        const float radius = ant->interactionRadius();
+        painter->setPen(Qt::green);
+        painter->drawEllipse(startPointAnt, radius, radius);
+    }
+
+    // draw privacy radius
+    if(_privacyRadiusVisible)
+    {
+        const float privacyRadius = ant->privacyRadius();
+        painter->setPen(Qt::black);
+        painter->drawEllipse(startPointAnt, privacyRadius, privacyRadius);
+    }
 
     painter->setBrush(oldBrush);
 }

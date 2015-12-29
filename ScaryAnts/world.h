@@ -15,6 +15,9 @@ public:
     void stopGame();
     bool isGameRunning() const { return _gameStarted;}
 
+    void setInteractionRadiusVisible(bool value) {_interactionRadiusVisible = value;}
+    void setPrivacyRadiusVisible(bool value) {_privacyRadiusVisible = value;}
+
     quint64 createAnt(const QPointF startPoint = QPointF(), Ant::AntType type = Ant::common);
     AntHash antHash() const { return _antHash;}
 
@@ -33,6 +36,8 @@ private:
 
     float randomFactor() const;
 
+    bool _interactionRadiusVisible;
+    bool _privacyRadiusVisible;
     bool _gameStarted;
     AntHash _antHash;
     quint64 _livecycleCounter {0};

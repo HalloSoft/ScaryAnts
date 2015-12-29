@@ -14,11 +14,12 @@ void Game::initialize()
 {
     for(int row = 100; row < _world->height(); row += 100)
     {
-        for(int column = 100; column < _world->width(); column += 100)
+        for(int column = 200; column < _world->width(); column += 200)
         {
             int id1 =_world->createAnt(QPoint(column, row), Ant::social);
             _world->antHash().value(id1)->setSpeed(3);
-            _world->antHash().value(id1)->setInteractionRadius(50);
+            _world->antHash().value(id1)->setPrivacyRadius(15);
+            _world->antHash().value(id1)->setInteractionRadius(70);
         }
     }
 

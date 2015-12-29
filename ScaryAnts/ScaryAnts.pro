@@ -28,3 +28,6 @@ HEADERS  += mainwindow.h \
     socialant.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    icons.qrc

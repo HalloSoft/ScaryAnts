@@ -28,19 +28,10 @@ void SocialAnt::processNewPosition()
 
 void SocialAnt::calculateDirectionAndSpeed()
 {
-    //modify direction
-    float dxStaticPart = direction().x() * 2;
-    float dyStaticPart = direction().y() * 2;
+    const QPointF directionVector = generateRandomDirection();
 
-    float dxRandomPart = (randomFactor() * 1);
-    float dyRandomPart = (randomFactor() * 1);
-
-    float dx = dxStaticPart + dxRandomPart;
-    float dy = dyStaticPart + dyRandomPart;
-
-    const QPointF directionVector = QPointF(dx, dy);
-
-    Ant *nearestAnt = nearestSiblingNear(interactionRadius());
+    // chack neibourhood
+    Ant *nearestAnt = nearestSibling(interactionRadius());
     QPointF newDirection;
     if(nearestAnt)
     {
@@ -67,9 +58,9 @@ void SocialAnt::changeDirectionOnBarrier(const QPointF& nextPoint)
     setDirection(newDirection);
 }
 
-Ant* SocialAnt::nearestSiblingNear(double maxDistance) const
+Ant* SocialAnt::nearestSibling(double maxDistance) const
 {
-    Ant *nearestSibling {nullptr};
+    Ant *nearestSibling  = nullptr;
 
     int minDistance = std::numeric_limits<int>::max();
 
@@ -77,18 +68,19 @@ Ant* SocialAnt::nearestSiblingNear(double maxDistance) const
 
     foreach(quint64 antId, antHash.keys())
     {
-        Ant *ant = antHash.value(antId);
+        Ant *otherAnt = antHash.value(antId);
 
-        if(this != ant)
+        float distanceToOtherAnt = distance(otherAnt, true);
+
+        bool isOtherAndThisIdentical = (this == otherAnt);
+        bool isOtherInRange = (distanceToOtherAnt <= maxDistance);
+
+        if(!isOtherAndThisIdentical && isOtherInRange)
         {
-            float antDistance = distance(ant, true);
-
-            if((antDistance < minDistance) && (antDistance > 30))
+            if(distanceToOtherAnt < minDistance)
             {
-                minDistance = antDistance;
-
-                if(antDistance < maxDistance)
-                    nearestSibling = ant;
+                minDistance = distanceToOtherAnt;
+                nearestSibling = otherAnt;
             }
         }
     }
@@ -103,5 +95,25 @@ QPointF SocialAnt::directionToFirend(Ant *other) const
 
 QPointF SocialAnt::interationDirection(Ant *other) const
 {
-    return directionToFirend(other);
+    QPointF resultVector = directionToFirend(other);
+
+    if(distance(other, true) < privacyRadius())
+        resultVector = -resultVector;
+
+    return resultVector;
+}
+
+QPointF SocialAnt::generateRandomDirection() const
+{
+    float dxStaticPart = direction().x() * 1;
+    float dyStaticPart = direction().y() * 1;
+
+    float dxRandomPart = (randomFactor() * 1);
+    float dyRandomPart = (randomFactor() * 1);
+
+    float dx = dxStaticPart + dxRandomPart;
+    float dy = dyStaticPart + dyRandomPart;
+
+    return QPointF(dx, dy);
+
 }
