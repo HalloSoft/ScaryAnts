@@ -19,7 +19,7 @@ void Game::initialize()
             int id1 =_world->createAnt(QPoint(column, row), Ant::social);
             _world->antHash().value(id1)->setSpeed(3);
             _world->antHash().value(id1)->setPrivacyRadius(15);
-            _world->antHash().value(id1)->setInteractionRadius(70);
+            _world->antHash().value(id1)->setInteractionRadius(100);
         }
     }
 

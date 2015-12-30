@@ -3,16 +3,14 @@
 
 #include "game.h"
 
-const quint32 MainWindow::antcount = 500;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    ui->world->setPrivacyRadiusVisible(true);
-    ui->world->setInteractionRadiusVisible(true);
+    ui->world->setPrivacyRadiusVisible(ui->checkBoxPrivacyRange->isChecked());
+    ui->world->setInteractionRadiusVisible(ui->checkBoxViewRange->isChecked());
 
     _game = new Game(ui->world, this);
 
@@ -20,6 +18,20 @@ MainWindow::MainWindow(QWidget *parent) :
     Q_UNUSED(isConnected);
     isConnected = connect(ui->buttonInit, SIGNAL(clicked()), this, SLOT(initGame()));   Q_ASSERT(isConnected);
     isConnected = connect(ui->buttonStart, SIGNAL(clicked()), this, SLOT(startGame())); Q_ASSERT(isConnected);
+
+    isConnected = connect(ui->checkBoxViewRange,
+                          SIGNAL(toggled(bool)),
+                          ui->world,
+                          SLOT(setInteractionRadiusVisible(bool)));
+    Q_ASSERT(isConnected);
+
+    isConnected = connect(ui->checkBoxPrivacyRange,
+                          SIGNAL(toggled(bool)),
+                          ui->world,
+                          SLOT(setPrivacyRadiusVisible(bool)));
+    Q_ASSERT(isConnected);
+
+
 }
 
 MainWindow::~MainWindow()

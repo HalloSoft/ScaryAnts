@@ -15,8 +15,7 @@ public:
     void stopGame();
     bool isGameRunning() const { return _gameStarted;}
 
-    void setInteractionRadiusVisible(bool value) {_interactionRadiusVisible = value;}
-    void setPrivacyRadiusVisible(bool value) {_privacyRadiusVisible = value;}
+
 
     quint64 createAnt(const QPointF startPoint = QPointF(), Ant::AntType type = Ant::common);
     AntHash antHash() const { return _antHash;}
@@ -28,6 +27,9 @@ protected:
 signals:
 
 public slots:
+    void setInteractionRadiusVisible(bool value);
+    void setPrivacyRadiusVisible(bool value);
+
 private:
     static const int interval;
     void drawAnts(QPainter *painter);

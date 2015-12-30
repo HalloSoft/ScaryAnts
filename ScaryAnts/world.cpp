@@ -83,6 +83,18 @@ void World::timerEvent(QTimerEvent *event)
         repaint();
 }
 
+void World::setInteractionRadiusVisible(bool value)
+{
+    _interactionRadiusVisible = value;
+    repaint();
+}
+
+void World::setPrivacyRadiusVisible(bool value)
+{
+    _privacyRadiusVisible = value;
+    repaint();
+}
+
 void World::drawAnts(QPainter *painter)
 {
     foreach(quint64 id, _antHash.keys())

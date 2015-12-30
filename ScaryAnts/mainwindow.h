@@ -22,8 +22,6 @@ private slots:
     void startGame();
 
 private:
-    static const quint32 antcount;
-
     Ui::MainWindow *ui;
     Game           *_game;
 };
