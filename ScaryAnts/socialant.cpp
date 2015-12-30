@@ -30,8 +30,9 @@ void SocialAnt::calculateDirectionAndSpeed()
 {
     const QPointF directionVector = generateRandomDirection();
 
-    // chack neibourhood
-    Ant *nearestAnt = nearestSibling(interactionRadius());
+    // check neibourhood
+    AntList allAntsInRange = antsInRange(interactionRadius());
+    Ant *nearestAnt = nearestSibling(allAntsInRange);
     QPointF newDirection;
     if(nearestAnt)
     {
@@ -58,11 +59,9 @@ void SocialAnt::changeDirectionOnBarrier(const QPointF& nextPoint)
     setDirection(newDirection);
 }
 
-Ant* SocialAnt::nearestSibling(double maxDistance) const
+AntList SocialAnt::antsInRange(double range) const
 {
-    Ant *nearestSibling  = nullptr;
-
-    int minDistance = std::numeric_limits<int>::max();
+    AntList result;
 
     AntHash antHash = world()->antHash();
 
@@ -70,18 +69,32 @@ Ant* SocialAnt::nearestSibling(double maxDistance) const
     {
         Ant *otherAnt = antHash.value(antId);
 
+        bool isNotMe = (this != otherAnt);
+
+        double distanceToOther = distance(otherAnt, true);
+
+        if(isNotMe && (distanceToOther <= range))
+            result << otherAnt;
+    }
+
+    return result;
+}
+
+Ant* SocialAnt::nearestSibling(AntList antsInRange) const
+{
+    Ant *nearestSibling  = nullptr;
+
+    int minDistance = std::numeric_limits<int>::max();
+
+
+    foreach(Ant *otherAnt, antsInRange)
+    {
         float distanceToOtherAnt = distance(otherAnt, true);
 
-        bool isOtherAndThisIdentical = (this == otherAnt);
-        bool isOtherInRange = (distanceToOtherAnt <= maxDistance);
-
-        if(!isOtherAndThisIdentical && isOtherInRange)
+        if(distanceToOtherAnt < minDistance)
         {
-            if(distanceToOtherAnt < minDistance)
-            {
-                minDistance = distanceToOtherAnt;
-                nearestSibling = otherAnt;
-            }
+            minDistance = distanceToOtherAnt;
+            nearestSibling = otherAnt;
         }
     }
 

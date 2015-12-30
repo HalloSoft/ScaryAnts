@@ -14,7 +14,8 @@ private:
     void calculateDirectionAndSpeed();
     void changeDirectionOnBarrier(const QPointF &nextPoint);
 
-    Ant *nearestSibling(double maxDistance) const;
+    AntList antsInRange(double range) const;
+    Ant *nearestSibling(AntList antsInRange) const;
 
     QPointF directionToFirend(Ant* other) const;
     QPointF interationDirection(Ant* other) const;

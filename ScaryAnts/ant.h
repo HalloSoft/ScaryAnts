@@ -53,4 +53,5 @@ private:
 };
 
 typedef QHash<quint64,Ant*> AntHash;
+typedef QList<Ant*> AntList;
 #endif // ANT_H
