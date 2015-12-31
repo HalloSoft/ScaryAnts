@@ -18,12 +18,15 @@ void SocialAnt::processNewPosition()
 
     QPointF tryPoint = position() + makeVelocityVector(speed(),  direction());
 
-    QRectF worldArea = world()->rect();
 
-    if(worldArea.contains(tryPoint.toPoint()))
+
+    if(isPositionPossible(tryPoint))
         setPosition(tryPoint);
     else
+    {
        changeDirectionOnBarrier(tryPoint);
+       //setPosition(position() + QPointF(1,1));
+    }
 }
 
 void SocialAnt::calculateDirectionAndSpeed()
@@ -32,11 +35,12 @@ void SocialAnt::calculateDirectionAndSpeed()
 
     // check neibourhood
     AntList allAntsInRange = antsInRange(interactionRadius());
-    Ant *nearestAnt = nearestSibling(allAntsInRange);
+
     QPointF newDirection;
-    if(nearestAnt)
+
+    if(allAntsInRange.count() > 0)
     {
-        QPointF socialDirection = interationDirection(nearestAnt);
+        QPointF socialDirection = interationDirection(allAntsInRange);
         newDirection = makeVelocityVector(speed(), socialDirection);
     }
     else
@@ -47,15 +51,18 @@ void SocialAnt::calculateDirectionAndSpeed()
 
 void SocialAnt::changeDirectionOnBarrier(const QPointF& nextPoint)
 {
-    QRectF boundingRect = world()->rect();
-    QPointF newDirection;
+    Q_UNUSED(nextPoint);
+//    QRectF boundingRect = world()->rect();
+//    QPointF newDirection;
 
-    if((nextPoint.x() < 1) ||(nextPoint.x() > boundingRect.width() - 2))
-        newDirection.setX( - direction().x());
+//    if((nextPoint.x() < 1) ||(nextPoint.x() > boundingRect.width() - 2))
+//        newDirection.setX( - direction().x());
 
-    if((nextPoint.y() < 1) ||(nextPoint.y() > boundingRect.height() - 2))
-        newDirection.setY( - direction().y());
+//    if((nextPoint.y() < 1) ||(nextPoint.y() > boundingRect.height() - 2))
+//        newDirection.setY( - direction().y());
 
+    QPointF newDirection = -direction() + QPointF(0, 1);
+    newDirection *= 2;
     setDirection(newDirection);
 }
 
@@ -101,6 +108,29 @@ Ant* SocialAnt::nearestSibling(AntList antsInRange) const
     return nearestSibling;
 }
 
+bool SocialAnt::isPositionPossible(const QPointF position) const
+{
+    bool isPossible = true;
+
+    QRectF worldArea = world()->rect();
+
+    // check world borders
+    if(!worldArea.contains(position.toPoint()))
+        isPossible = false;
+
+    // check other ants
+    AntList allAntsInRange = antsInRange(interactionRadius());
+    Ant *nearestAnt = nearestSibling(allAntsInRange);
+    if(nearestAnt)
+    {
+        double distanceToNearest = distance(nearestAnt, true);
+        if(distanceToNearest <= privacyRadius())
+            isPossible = false;
+    }
+
+    return isPossible;
+}
+
 QPointF SocialAnt::directionToFirend(Ant *other) const
 {
     return other->position() - position();
@@ -116,13 +146,23 @@ QPointF SocialAnt::interationDirection(Ant *other) const
     return resultVector;
 }
 
+QPointF SocialAnt::interationDirection(AntList antsInRange) const
+{
+    QPointF resultVector;
+
+    foreach(Ant *neighbourAnt, antsInRange)
+        resultVector += directionToFirend(neighbourAnt);
+
+    return resultVector;
+}
+
 QPointF SocialAnt::generateRandomDirection() const
 {
     float dxStaticPart = direction().x() * 1;
     float dyStaticPart = direction().y() * 1;
 
-    float dxRandomPart = (randomFactor() * 1);
-    float dyRandomPart = (randomFactor() * 1);
+    float dxRandomPart = (randomFactor() * 3);
+    float dyRandomPart = (randomFactor() * 3);
 
     float dx = dxStaticPart + dxRandomPart;
     float dy = dyStaticPart + dyRandomPart;

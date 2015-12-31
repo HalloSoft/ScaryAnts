@@ -8,6 +8,7 @@ using namespace std;
 
 Ant::Ant(World *world) :
     _world(world),
+    _size(1),
     _speed(1),
     _interactionRadius(50)
 {

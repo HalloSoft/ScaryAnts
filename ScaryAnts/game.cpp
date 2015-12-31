@@ -7,9 +7,8 @@ Game::Game(World *world, QObject *parent) :
     _world(world)
 {
     Q_CHECK_PTR(_world);
-
-
 }
+
 void Game::initialize()
 {
     for(int row = 100; row < _world->height(); row += 100)
@@ -17,9 +16,10 @@ void Game::initialize()
         for(int column = 200; column < _world->width(); column += 200)
         {
             int id1 =_world->createAnt(QPoint(column, row), Ant::social);
+            _world->antHash().value(id1)->setSizeRadius(3);
             _world->antHash().value(id1)->setSpeed(3);
-            _world->antHash().value(id1)->setPrivacyRadius(15);
-            _world->antHash().value(id1)->setInteractionRadius(100);
+            _world->antHash().value(id1)->setPrivacyRadius(20);
+            _world->antHash().value(id1)->setInteractionRadius(400);
         }
     }
 

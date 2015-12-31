@@ -113,8 +113,9 @@ void World::drawAnt(QPainter *painter, Ant *ant)
     painter->setBrush(Qt::black);
     painter->setPen(QColor("brown"));
 
-    QPointF startPointAnt = ant->position(); // - QPointF(3, 3);
-    painter->drawEllipse(startPointAnt, 6, 6);
+    QPointF startPointAnt = ant->position();
+    float antRadius = ant->sizeRadus();
+    painter->drawEllipse(startPointAnt, antRadius, antRadius);
 
     painter->setBrush(oldBrush);
 

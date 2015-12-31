@@ -19,6 +19,9 @@ public:
     void    setPosition(const QPointF& position) { _position = position;}
     QPointF position() const {return _position;}
 
+    void    setSizeRadius(float sizeRadius) {_size =sizeRadius;}
+    float   sizeRadus() const {return _size;}
+
     void    setSpeed(float speed) { _speed = speed;}
     float   speed() const { return _speed;}
 
@@ -45,6 +48,7 @@ private:
     World   *_world;
     QPointF _position;
     QPointF _direction;
+    float   _size;
     float   _speed;
     float   _interactionRadius;
     float   _privacyRadius;

@@ -17,8 +17,10 @@ private:
     AntList antsInRange(double range) const;
     Ant *nearestSibling(AntList antsInRange) const;
 
+    bool    isPositionPossible(const QPointF position) const;
     QPointF directionToFirend(Ant* other) const;
     QPointF interationDirection(Ant* other) const;
+    QPointF interationDirection(AntList antsInRange) const;
     QPointF generateRandomDirection() const;
 
 };
